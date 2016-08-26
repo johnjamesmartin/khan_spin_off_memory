@@ -1,4 +1,11 @@
-var Tile = function(x, y, face) {
+var CONFIG, FACES, startGame, Tile;
+
+CONFIG = {
+    COLS_LENGTH: 5,
+    ROWS_LENGTH: 4
+};
+
+Tile = function(x, y, face) {
     this.x = x;
     this.y = y;
     this.face = face;
@@ -9,16 +16,17 @@ Tile.prototype.drawFaceDown = function() {
     fill(214, 247, 202);
     strokeWeight(2);
     rect(this.x, this.y, this.width, this.width, 10);
-    image(getImage("avatars/leaf-green"), this.x, this.y, this.width, this.width);
+    image(getImage("avatars/leaf-green"), 
+    this.x, this.y, this.width, this.width);
     this.isFaceUp = false;
 };
 
-// Hover Face Down
 Tile.prototype.drawFaceDownHover = function() {
     fill(30, 112, 0);
     strokeWeight(2);
     rect(this.x, this.y, this.width, this.width, 10);
-    image(getImage("avatars/orange-juice-squid"), this.x, this.y, this.width, this.width);
+    image(getImage("avatars/orange-juice-squid"),
+    this.x, this.y, this.width, this.width);
     this.isFaceUp = false;
 };
 
@@ -35,12 +43,8 @@ Tile.prototype.isUnderMouse = function(x, y) {
         y >= this.y && y <= this.y + this.width;
 };
 
-// Global config
-var NUM_COLS = 5;
-var NUM_ROWS = 4;
-
 // Declare an array of all possible faces
-var faces = [
+FACES = [
     getImage("avatars/leafers-seed"),
     getImage("avatars/leafers-seedling"),
     getImage("avatars/leafers-sapling"),
@@ -53,38 +57,27 @@ var faces = [
     getImage("avatars/robot_female_1")
 ];
 
-// Global Variables
 
-// variables to keep track of best time and best # of tries
+
+
+
+
 var bestTime = 0;
 var bestTries = 0;
-
-// keep track of time taken
 var curTime = 0;
-
 var flippedTiles = [];
 var delayStartFC = null;
 var numTries = 0;
-
-// check if start timer has been clicked
 var isStart = false;
-
-// start time
 var startTime = 0;
-
-// check if game is over
 var isOver = false;
-
 // Make an array which has 2 of each, then randomize it
-var possibleFaces = faces.slice(0);
+var possibleFaces = FACES.slice(0);
 var selected = [];
-
-// our tiles
 var tiles = [];
 
 // turn in this into a function so we can do it later when we click new game
-var startGame = function() {
-
+startGame = function() {
     // set our variables to their defaults, some may be redundant 
     curTime = 0;
     flippedTiles = [];
@@ -94,11 +87,11 @@ var startGame = function() {
     startTime = 0;
     isOver = false;
     
-    possibleFaces = faces.slice(0);
+    possibleFaces = FACES.slice(0);
     selected = [];
     tiles = [];
 
-    for (var i = 0; i < (NUM_COLS * NUM_ROWS) / 2; i++) {
+    for (var i = 0; i < (CONFIG.COLS_LENGTH * CONFIG.ROWS_LENGTH) / 2; i++) {
         // Randomly pick one from the array of remaining faces
         var randomInd = floor(random(possibleFaces.length));
         var face = possibleFaces[randomInd];
@@ -115,8 +108,8 @@ var startGame = function() {
     });
     
     // Create the tiles
-    for (var i = 0; i < NUM_COLS; i++) {
-        for (var j = 0; j < NUM_ROWS; j++) {
+    for (var i = 0; i < CONFIG.COLS_LENGTH; i++) {
+        for (var j = 0; j < CONFIG.ROWS_LENGTH; j++) {
             tiles.push(new Tile(i * 78 + 10, j * 78 + 40, selected.pop()));
         }
     }
