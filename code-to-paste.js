@@ -139,8 +139,7 @@ Tile.prototype.isUnderMouse = function(x, y) {
 };
 
 
-/*  "startGame" is a looping function
-    that initializes the game:
+/*  "startGame" assigns initial values:
 **************************************/
 
 startGame = function() {
