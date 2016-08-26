@@ -1,49 +1,26 @@
-var CONFIG, FACES, startGame, Tile;
+// Spin-off of "Project: Memory++" by John
+
+/*  Global variables:
+**************************************/
+
+var CONFIG,
+    FACES,
+    startGame,
+    Tile;
+
+/*  CONFIG is used to centralize a
+    number of values used throughout
+    the app:
+**************************************/
 
 CONFIG = {
     COLS_LENGTH: 5,
     ROWS_LENGTH: 4
 };
 
-Tile = function(x, y, face) {
-    this.x = x;
-    this.y = y;
-    this.face = face;
-    this.width = 70;
-};
+/*  Images used for card faces:
+**************************************/
 
-Tile.prototype.drawFaceDown = function() {
-    fill(214, 247, 202);
-    strokeWeight(2);
-    rect(this.x, this.y, this.width, this.width, 10);
-    image(getImage("avatars/leaf-green"), 
-    this.x, this.y, this.width, this.width);
-    this.isFaceUp = false;
-};
-
-Tile.prototype.drawFaceDownHover = function() {
-    fill(30, 112, 0);
-    strokeWeight(2);
-    rect(this.x, this.y, this.width, this.width, 10);
-    image(getImage("avatars/orange-juice-squid"),
-    this.x, this.y, this.width, this.width);
-    this.isFaceUp = false;
-};
-
-Tile.prototype.drawFaceUp = function() {
-    fill(214, 247, 202);
-    strokeWeight(2);
-    rect(this.x, this.y, this.width, this.width, 10);
-    image(this.face, this.x, this.y, this.width, this.width);
-    this.isFaceUp = true;
-};
-
-Tile.prototype.isUnderMouse = function(x, y) {
-    return x >= this.x && x <= this.x + this.width  &&
-        y >= this.y && y <= this.y + this.width;
-};
-
-// Declare an array of all possible faces
 FACES = [
     getImage("avatars/leafers-seed"),
     getImage("avatars/leafers-seedling"),
@@ -56,6 +33,71 @@ FACES = [
     getImage("avatars/old-spice-man"),
     getImage("avatars/robot_female_1")
 ];
+
+/*  Tile constructor function:
+**************************************/
+
+Tile = function(x, y, face) {
+    this.x = x;
+    this.y = y;
+    this.face = face;
+    this.width = 70;
+};
+
+/*  Tile's "drawFaceDown" is used to
+    style the back face of cards. By
+    default, I've set it to use a 
+    green leaf image:
+**************************************/
+
+Tile.prototype.drawFaceDown = function() {
+    fill(214, 247, 202);
+    strokeWeight(2);
+    rect(this.x, this.y, this.width, this.width, 10);
+    image(getImage("avatars/leaf-green"), 
+    this.x, this.y, this.width, this.width);
+    this.isFaceUp = false;
+};
+
+/*  Tile's "drawFaceDownHover" is used
+    to style the back face of cards
+    when the user hovers over the card.
+    By default, I've set it to use a 
+    yellow leaf image:
+**************************************/
+
+Tile.prototype.drawFaceDownHover = function() {
+    fill(214, 247, 202);
+    strokeWeight(2);
+    rect(this.x, this.y, this.width, this.width, 10);
+    image(getImage("avatars/leaf-yellow"),
+    this.x, this.y, this.width, this.width);
+    this.isFaceUp = false;
+};
+
+/*  Tile's "drawFaceUp" is used to
+    style the face of cards:
+**************************************/
+
+Tile.prototype.drawFaceUp = function() {
+    fill(214, 247, 202);
+    strokeWeight(2);
+    rect(this.x, this.y, this.width, this.width, 10);
+    image(this.face, this.x, this.y, this.width, this.width);
+    this.isFaceUp = true;
+};
+
+/*  Tile's "isUnderMouse" is used to
+    determine whether a card is under
+    the current mouse position:
+**************************************/
+
+Tile.prototype.isUnderMouse = function(x, y) {
+    return x >= this.x && x <= this.x + this.width  &&
+        y >= this.y && y <= this.y + this.width;
+};
+
+
 
 
 
@@ -86,7 +128,6 @@ startGame = function() {
     isStart = false;
     startTime = 0;
     isOver = false;
-    
     possibleFaces = FACES.slice(0);
     selected = [];
     tiles = [];
