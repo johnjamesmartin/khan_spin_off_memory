@@ -14,8 +14,12 @@ var CONFIG,
 **************************************/
 
 CONFIG = {
+    hasBegun: false,
+    hasEnded: false,
+
     COLS_LENGTH: 5,
     ROWS_LENGTH: 4,
+    
     UI: {
         START_TIMER_BUTTON: {
             X: 150,
@@ -35,21 +39,19 @@ CONFIG = {
             
         }
     },
-    hasBegun: false,
-    hasEnded: false
-    
+    arrays: {
+        revealedTiles: [],
+        selectedTiles: [],
+        tilesArr: []
+    }
 };
 
 
 
-
-var flippedTiles = [];
 var delayStartFC = null;
 var numTries = 0;
 // Make an array which has 2 of each, then randomize it
 var possibleFaces = FACES.slice(0);
-var selected = [];
-var tiles = [];
 
 
 
@@ -145,44 +147,44 @@ Tile.prototype.isUnderMouse = function(x, y) {
 startGame = function() {
     // set our variables to their defaults, some may be redundant 
     CONFIG.stats.timeValues.currentTime = 0;
-    flippedTiles = [];
+    CONFIG.arrays.revealedTiles = [];
     delayStartFC = null;
     numTries = 0;
     CONFIG.hasBegun = false;
     CONFIG.stats.timeValues.startTime = 0;
     CONFIG.hasEnded = false;
     possibleFaces = FACES.slice(0);
-    selected = [];
-    tiles = [];
+    CONFIG.arrays.selectedTiles = [];
+    CONFIG.arrays.tilesArr = [];
 
     for (var i = 0; i < (CONFIG.COLS_LENGTH * CONFIG.ROWS_LENGTH) / 2; i++) {
         // Randomly pick one from the array of remaining faces
         var randomInd = floor(random(possibleFaces.length));
         var face = possibleFaces[randomInd];
         // Push twice onto array
-        selected.push(face);
-        selected.push(face);
+        CONFIG.arrays.selectedTiles.push(face);
+        CONFIG.arrays.selectedTiles.push(face);
         // Remove from array
         possibleFaces.splice(randomInd, 1);
     }
     
     // Now we need to randomize the array
-    selected.sort(function() {
+    CONFIG.arrays.selectedTiles.sort(function() {
         return 0.5 - Math.random();
     });
     
-    // Create the tiles
+    // Create the CONFIG.arrays.tilesArr
     for (var i = 0; i < CONFIG.COLS_LENGTH; i++) {
         for (var j = 0; j < CONFIG.ROWS_LENGTH; j++) {
-            tiles.push(new Tile(i * 78 + 10, j * 78 + 40, selected.pop()));
+            CONFIG.arrays.tilesArr.push(new Tile(i * 78 + 10, j * 78 + 40, CONFIG.arrays.selectedTiles.pop()));
         }
     }
     
     background(255, 255, 255);
     
     // Now draw them face up
-    for (var i = 0; i < tiles.length; i++) {
-        tiles[i].drawFaceDown();
+    for (var i = 0; i < CONFIG.arrays.tilesArr.length; i++) {
+        CONFIG.arrays.tilesArr[i].drawFaceDown();
     }
 };
 
@@ -205,17 +207,17 @@ mouseClicked = function() {
     }
     
     }
-    for (var i = 0; i < tiles.length; i++) {
+    for (var i = 0; i < CONFIG.arrays.tilesArr.length; i++) {
         // make this statement check if start button has been pressed
-        if (tiles[i].isUnderMouse(mouseX, mouseY) && CONFIG.hasBegun) {
-            if (flippedTiles.length < 2 && !tiles[i].isFaceUp) {
-                tiles[i].drawFaceUp();
-                flippedTiles.push(tiles[i]);
-                if (flippedTiles.length === 2) {
+        if (CONFIG.arrays.tilesArr[i].isUnderMouse(mouseX, mouseY) && CONFIG.hasBegun) {
+            if (CONFIG.arrays.revealedTiles.length < 2 && !CONFIG.arrays.tilesArr[i].isFaceUp) {
+                CONFIG.arrays.tilesArr[i].drawFaceUp();
+                CONFIG.arrays.revealedTiles.push(CONFIG.arrays.tilesArr[i]);
+                if (CONFIG.arrays.revealedTiles.length === 2) {
                     numTries++;
-                    if (flippedTiles[0].face === flippedTiles[1].face) {
-                        flippedTiles[0].isMatch = true;
-                        flippedTiles[1].isMatch = true;
+                    if (CONFIG.arrays.revealedTiles[0].face === CONFIG.arrays.revealedTiles[1].face) {
+                        CONFIG.arrays.revealedTiles[0].isMatch = true;
+                        CONFIG.arrays.revealedTiles[1].isMatch = true;
                     }
                     delayStartFC = frameCount;
                     loop();
@@ -224,8 +226,8 @@ mouseClicked = function() {
         }
     }
     var foundAllMatches = true;
-    for (var i = 0; i < tiles.length; i++) {
-        foundAllMatches = foundAllMatches && tiles[i].isMatch;
+    for (var i = 0; i < CONFIG.arrays.tilesArr.length; i++) {
+        foundAllMatches = foundAllMatches && CONFIG.arrays.tilesArr[i].isMatch;
     }
     if (foundAllMatches) {
         // if our current time is better than our best time and if it's not 0 (default time)
@@ -251,29 +253,29 @@ mouseClicked = function() {
 // main draw function    
 draw = function() {
     if (delayStartFC && (frameCount - delayStartFC) > 30) {
-        for (var i = 0; i < tiles.length; i++) {
-            if (!tiles[i].isMatch) {
-                tiles[i].drawFaceDown();
+        for (var i = 0; i < CONFIG.arrays.tilesArr.length; i++) {
+            if (!CONFIG.arrays.tilesArr[i].isMatch) {
+                CONFIG.arrays.tilesArr[i].drawFaceDown();
             }
         }
-        flippedTiles = [];
+        CONFIG.arrays.revealedTiles = [];
         delayStartFC = null;
     }
     
     // mouse hover
-    for(var j = 0; j < tiles.length; j++){
+    for(var j = 0; j < CONFIG.arrays.tilesArr.length; j++){
         // if the mouse is over and tile and it is not face up
-        if(tiles[j].isUnderMouse(mouseX, mouseY) && !tiles[j].isFaceUp){
+        if(CONFIG.arrays.tilesArr[j].isUnderMouse(mouseX, mouseY) && !CONFIG.arrays.tilesArr[j].isFaceUp){
             // we draw the face down hover tile
-            tiles[j].drawFaceDownHover();
+            CONFIG.arrays.tilesArr[j].drawFaceDownHover();
         // else if the tile we are over is face up
-        } else if (tiles[j].isFaceUp){
+        } else if (CONFIG.arrays.tilesArr[j].isFaceUp){
             // we draw a normal face up tile
-            tiles[j].drawFaceUp();
+            CONFIG.arrays.tilesArr[j].drawFaceUp();
         // else we are not over the tile and it is not face up
         } else {
             // we draw a noraml face down tile
-            tiles[j].drawFaceDown();
+            CONFIG.arrays.tilesArr[j].drawFaceDown();
         }
     }
     
