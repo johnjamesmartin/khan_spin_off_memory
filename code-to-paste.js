@@ -23,19 +23,29 @@ CONFIG = {
             WIDTH: 100,
             HEIGHT: 30
         }
-    }
+    },
+    stats: {
+        highscore: {
+            time: 0,
+            tries: 0
+        },
+        timeValues: {
+            currentTime: 0,
+            startTime: 0
+            
+        }
+    },
+    hasBegun: false,
+    hasEnded: false
     
 };
 
-var bestTime = 0;
-var bestTries = 0;
-var curTime = 0;
+
+
+
 var flippedTiles = [];
 var delayStartFC = null;
 var numTries = 0;
-var isStart = false;
-var startTime = 0;
-var isOver = false;
 // Make an array which has 2 of each, then randomize it
 var possibleFaces = FACES.slice(0);
 var selected = [];
@@ -134,13 +144,13 @@ Tile.prototype.isUnderMouse = function(x, y) {
 // turn in this into a function so we can do it later when we click new game
 startGame = function() {
     // set our variables to their defaults, some may be redundant 
-    curTime = 0;
+    CONFIG.stats.timeValues.currentTime = 0;
     flippedTiles = [];
     delayStartFC = null;
     numTries = 0;
-    isStart = false;
-    startTime = 0;
-    isOver = false;
+    CONFIG.hasBegun = false;
+    CONFIG.stats.timeValues.startTime = 0;
+    CONFIG.hasEnded = false;
     possibleFaces = FACES.slice(0);
     selected = [];
     tiles = [];
@@ -183,21 +193,21 @@ startGame();
 
 mouseClicked = function() {
     // check if start/new game button is clicked, and we're not in the middle of a game
-    if(mouseX > CONFIG.UI.START_TIMER_BUTTON.X && mouseX < CONFIG.UI.START_TIMER_BUTTON.X + CONFIG.UI.START_TIMER_BUTTON.WIDTH && mouseY > CONFIG.UI.START_TIMER_BUTTON.Y && mouseY < CONFIG.UI.START_TIMER_BUTTON.Y + CONFIG.UI.START_TIMER_BUTTON.HEIGHT && !isStart){
+    if(mouseX > CONFIG.UI.START_TIMER_BUTTON.X && mouseX < CONFIG.UI.START_TIMER_BUTTON.X + CONFIG.UI.START_TIMER_BUTTON.WIDTH && mouseY > CONFIG.UI.START_TIMER_BUTTON.Y && mouseY < CONFIG.UI.START_TIMER_BUTTON.Y + CONFIG.UI.START_TIMER_BUTTON.HEIGHT && !CONFIG.hasBegun){
         
     // if the game is over we're showing the new game button and should restart
-    if(isOver){
+    if(CONFIG.hasEnded){
         startGame();
     // otherwise we let the program know were in the middle of a game and get a start time
     } else {
-        isStart = true;
-        startTime = millis();
+        CONFIG.hasBegun = true;
+        CONFIG.stats.timeValues.startTime = millis();
     }
     
     }
     for (var i = 0; i < tiles.length; i++) {
         // make this statement check if start button has been pressed
-        if (tiles[i].isUnderMouse(mouseX, mouseY) && isStart) {
+        if (tiles[i].isUnderMouse(mouseX, mouseY) && CONFIG.hasBegun) {
             if (flippedTiles.length < 2 && !tiles[i].isFaceUp) {
                 tiles[i].drawFaceUp();
                 flippedTiles.push(tiles[i]);
@@ -219,20 +229,20 @@ mouseClicked = function() {
     }
     if (foundAllMatches) {
         // if our current time is better than our best time and if it's not 0 (default time)
-        if(curTime < bestTime || bestTime === 0){
+        if(CONFIG.stats.timeValues.currentTime < CONFIG.stats.highscore.time || CONFIG.stats.highscore.time === 0){
             // set our new best time as the current time
-            bestTime = curTime;
+            CONFIG.stats.highscore.time = CONFIG.stats.timeValues.currentTime;
         }
         
         // same goes for number of tries
-        if(numTries < bestTries || bestTries === 0){
-            bestTries = numTries;
+        if(numTries < CONFIG.stats.highscore.tries || CONFIG.stats.highscore.tries === 0){
+            CONFIG.stats.highscore.tries = numTries;
         }
         
         // we are currently not in a game
-        isStart = false;
+        CONFIG.hasBegun = false;
         // and the game is over
-        isOver = true;
+        CONFIG.hasEnded = true;
 
         // we are done!
     }
@@ -275,14 +285,14 @@ draw = function() {
     stroke(0,0,0);
     
     // start timer button when pressed
-    if(isStart){
+    if(CONFIG.hasBegun){
         fill (30, 112, 0);
         rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
         text ("Start Timer", CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     // changes into a new game button if the game is over
-    } else if (isOver){
+    } else if (CONFIG.hasEnded){
         fill (214, 247, 202);
         rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
@@ -300,11 +310,11 @@ draw = function() {
     // show timer
     fill(0,0,0);
     // if we clicked the start button start counting
-    if(isStart){
-        curTime = round((millis() - startTime)/1000);
+    if(CONFIG.hasBegun){
+        CONFIG.stats.timeValues.currentTime = round((millis() - CONFIG.stats.timeValues.startTime)/1000);
     }
     // print the time
-    text ("time: " + curTime + "s", 300, 30);
+    text ("time: " + CONFIG.stats.timeValues.currentTime + "s", 300, 30);
     
     // display number of tries
     text("# of tries: " + numTries, 20,30);
@@ -312,5 +322,5 @@ draw = function() {
     // display best time and number of tries
     fill(0, 0, 0);
     textSize(20);
-    text("best # of tries: " + bestTime + " best time: " + bestTries, 20, 375);
+    text("best # of tries: " + CONFIG.stats.highscore.time + " best time: " + CONFIG.stats.highscore.tries, 20, 375);
 };
