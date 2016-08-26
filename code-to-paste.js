@@ -8,18 +8,23 @@ var CONFIG,
     startGame,
     Tile;
 
+
 /*  CONFIG is used to centralize a
     number of values used throughout
-    the app:
+    the game:
 **************************************/
 
 CONFIG = {
     hasBegun: false,
     hasEnded: false,
 
+    // Rows and columns that make up grid:
+
     COLS_LENGTH: 5,
     ROWS_LENGTH: 4,
-    
+
+    // User Interface elements:
+
     UI: {
         START_TIMER_BUTTON: {
             X: 150,
@@ -36,23 +41,17 @@ CONFIG = {
         timeValues: {
             currentTime: 0,
             startTime: 0
-            
-        }
+        },
+        numberOfTries: 0
     },
     arrays: {
         revealedTiles: [],
         selectedTiles: [],
         tilesArr: []
-    }
+    },
+    initialFrameCount: null,
+    potentialFaces: FACES.slice(0)
 };
-
-
-
-var delayStartFC = null;
-var numTries = 0;
-// Make an array which has 2 of each, then randomize it
-var possibleFaces = FACES.slice(0);
-
 
 
 /*  Images used for card faces:
@@ -71,6 +70,7 @@ FACES = [
     getImage("avatars/robot_female_1")
 ];
 
+
 /*  Tile constructor function:
 **************************************/
 
@@ -80,6 +80,7 @@ Tile = function(x, y, face) {
     this.face = face;
     this.width = 70;
 };
+
 
 /*  Tile's "drawFaceDown" is used to
     style the back face of cards. By
@@ -95,6 +96,7 @@ Tile.prototype.drawFaceDown = function() {
     this.x, this.y, this.width, this.width);
     this.isFaceUp = false;
 };
+
 
 /*  Tile's "drawFaceDownHover" is used
     to style the back face of cards
@@ -112,6 +114,7 @@ Tile.prototype.drawFaceDownHover = function() {
     this.isFaceUp = false;
 };
 
+
 /*  Tile's "drawFaceUp" is used to
     style the face of cards:
 **************************************/
@@ -124,6 +127,7 @@ Tile.prototype.drawFaceUp = function() {
     this.isFaceUp = true;
 };
 
+
 /*  Tile's "isUnderMouse" is used to
     determine whether a card is under
     the current mouse position:
@@ -135,37 +139,34 @@ Tile.prototype.isUnderMouse = function(x, y) {
 };
 
 
+/*  "startGame" is a looping function
+    that initializes the game:
+**************************************/
 
-
-
-
-
-
-
-
-// turn in this into a function so we can do it later when we click new game
 startGame = function() {
-    // set our variables to their defaults, some may be redundant 
+
+    // Assign default values to CONFIG properties:
+
     CONFIG.stats.timeValues.currentTime = 0;
     CONFIG.arrays.revealedTiles = [];
-    delayStartFC = null;
-    numTries = 0;
+    CONFIG.initialFrameCount = null;
+    CONFIG.stats.numberOfTries = 0;
     CONFIG.hasBegun = false;
     CONFIG.stats.timeValues.startTime = 0;
     CONFIG.hasEnded = false;
-    possibleFaces = FACES.slice(0);
+    CONFIG.potentialFaces = FACES.slice(0);
     CONFIG.arrays.selectedTiles = [];
     CONFIG.arrays.tilesArr = [];
 
     for (var i = 0; i < (CONFIG.COLS_LENGTH * CONFIG.ROWS_LENGTH) / 2; i++) {
         // Randomly pick one from the array of remaining faces
-        var randomInd = floor(random(possibleFaces.length));
-        var face = possibleFaces[randomInd];
+        var randomInd = floor(random(CONFIG.potentialFaces.length));
+        var face = CONFIG.potentialFaces[randomInd];
         // Push twice onto array
         CONFIG.arrays.selectedTiles.push(face);
         CONFIG.arrays.selectedTiles.push(face);
         // Remove from array
-        possibleFaces.splice(randomInd, 1);
+        CONFIG.potentialFaces.splice(randomInd, 1);
     }
     
     // Now we need to randomize the array
@@ -214,12 +215,12 @@ mouseClicked = function() {
                 CONFIG.arrays.tilesArr[i].drawFaceUp();
                 CONFIG.arrays.revealedTiles.push(CONFIG.arrays.tilesArr[i]);
                 if (CONFIG.arrays.revealedTiles.length === 2) {
-                    numTries++;
+                    CONFIG.stats.numberOfTries++;
                     if (CONFIG.arrays.revealedTiles[0].face === CONFIG.arrays.revealedTiles[1].face) {
                         CONFIG.arrays.revealedTiles[0].isMatch = true;
                         CONFIG.arrays.revealedTiles[1].isMatch = true;
                     }
-                    delayStartFC = frameCount;
+                    CONFIG.initialFrameCount = frameCount;
                     loop();
                 }
             } 
@@ -237,8 +238,8 @@ mouseClicked = function() {
         }
         
         // same goes for number of tries
-        if(numTries < CONFIG.stats.highscore.tries || CONFIG.stats.highscore.tries === 0){
-            CONFIG.stats.highscore.tries = numTries;
+        if(CONFIG.stats.numberOfTries < CONFIG.stats.highscore.tries || CONFIG.stats.highscore.tries === 0){
+            CONFIG.stats.highscore.tries = CONFIG.stats.numberOfTries;
         }
         
         // we are currently not in a game
@@ -252,14 +253,14 @@ mouseClicked = function() {
 
 // main draw function    
 draw = function() {
-    if (delayStartFC && (frameCount - delayStartFC) > 30) {
+    if (CONFIG.initialFrameCount && (frameCount - CONFIG.initialFrameCount) > 30) {
         for (var i = 0; i < CONFIG.arrays.tilesArr.length; i++) {
             if (!CONFIG.arrays.tilesArr[i].isMatch) {
                 CONFIG.arrays.tilesArr[i].drawFaceDown();
             }
         }
         CONFIG.arrays.revealedTiles = [];
-        delayStartFC = null;
+        CONFIG.initialFrameCount = null;
     }
     
     // mouse hover
@@ -319,7 +320,7 @@ draw = function() {
     text ("time: " + CONFIG.stats.timeValues.currentTime + "s", 300, 30);
     
     // display number of tries
-    text("# of tries: " + numTries, 20,30);
+    text("# of tries: " + CONFIG.stats.numberOfTries, 20,30);
     
     // display best time and number of tries
     fill(0, 0, 0);
