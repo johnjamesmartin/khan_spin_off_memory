@@ -15,8 +15,33 @@ var CONFIG,
 
 CONFIG = {
     COLS_LENGTH: 5,
-    ROWS_LENGTH: 4
+    ROWS_LENGTH: 4,
+    UI: {
+        START_TIMER_BUTTON: {
+            X: 150,
+            Y: 5,
+            WIDTH: 100,
+            HEIGHT: 30
+        }
+    }
+    
 };
+
+var bestTime = 0;
+var bestTries = 0;
+var curTime = 0;
+var flippedTiles = [];
+var delayStartFC = null;
+var numTries = 0;
+var isStart = false;
+var startTime = 0;
+var isOver = false;
+// Make an array which has 2 of each, then randomize it
+var possibleFaces = FACES.slice(0);
+var selected = [];
+var tiles = [];
+
+
 
 /*  Images used for card faces:
 **************************************/
@@ -104,19 +129,7 @@ Tile.prototype.isUnderMouse = function(x, y) {
 
 
 
-var bestTime = 0;
-var bestTries = 0;
-var curTime = 0;
-var flippedTiles = [];
-var delayStartFC = null;
-var numTries = 0;
-var isStart = false;
-var startTime = 0;
-var isOver = false;
-// Make an array which has 2 of each, then randomize it
-var possibleFaces = FACES.slice(0);
-var selected = [];
-var tiles = [];
+
 
 // turn in this into a function so we can do it later when we click new game
 startGame = function() {
@@ -166,15 +179,11 @@ startGame = function() {
 // start our game for the first time
 startGame();
 
-// position and dimensions of start button
-var startButtonX = 150;
-var startButtonY = 5;
-var startButtonWidth = 100;
-var startButtonHeight = 30;
+
 
 mouseClicked = function() {
     // check if start/new game button is clicked, and we're not in the middle of a game
-    if(mouseX > startButtonX && mouseX < startButtonX + startButtonWidth && mouseY > startButtonY && mouseY < startButtonY + startButtonHeight && !isStart){
+    if(mouseX > CONFIG.UI.START_TIMER_BUTTON.X && mouseX < CONFIG.UI.START_TIMER_BUTTON.X + CONFIG.UI.START_TIMER_BUTTON.WIDTH && mouseY > CONFIG.UI.START_TIMER_BUTTON.Y && mouseY < CONFIG.UI.START_TIMER_BUTTON.Y + CONFIG.UI.START_TIMER_BUTTON.HEIGHT && !isStart){
         
     // if the game is over we're showing the new game button and should restart
     if(isOver){
@@ -268,24 +277,24 @@ draw = function() {
     // start timer button when pressed
     if(isStart){
         fill (30, 112, 0);
-        rect(startButtonX,startButtonY, startButtonWidth, startButtonHeight);
+        rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
-        text ("Start Timer", startButtonX + 3, startButtonY + 21);
+        text ("Start Timer", CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     // changes into a new game button if the game is over
     } else if (isOver){
         fill (214, 247, 202);
-        rect(startButtonX,startButtonY, startButtonWidth, startButtonHeight);
+        rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
-        text ("New Game", startButtonX + 3, startButtonY + 21);
+        text ("New Game", CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     // otherwise we show the default start timer button
     } else {
         fill (214, 247, 202);
-        rect(startButtonX,startButtonY, startButtonWidth, startButtonHeight);
+        rect(CONFIG.UI.START_TIMER_BUTTON.X,CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
-        text ("Start Timer", startButtonX + 3, startButtonY + 21);
+        text ("Start Timer", CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     }
             
     // show timer
