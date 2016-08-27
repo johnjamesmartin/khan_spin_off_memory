@@ -59,16 +59,16 @@ CONFIG = {
 **************************************/
 
 FACES = [
-    getImage("avatars/leafers-seed"),
-    getImage("avatars/leafers-seedling"),
-    getImage("avatars/leafers-sapling"),
-    getImage("avatars/leafers-tree"),
-    getImage("avatars/leafers-ultimate"),
-    getImage("avatars/marcimus"),
-    getImage("avatars/mr-pants"),
-    getImage("avatars/mr-pink"),
-    getImage("avatars/old-spice-man"),
-    getImage("avatars/robot_female_1")
+    getImage('avatars/leafers-seed'),
+    getImage('avatars/leafers-seedling'),
+    getImage('avatars/leafers-sapling'),
+    getImage('avatars/leafers-tree'),
+    getImage('avatars/leafers-ultimate'),
+    getImage('avatars/marcimus'),
+    getImage('avatars/mr-pants'),
+    getImage('avatars/mr-pink'),
+    getImage('avatars/old-spice-man'),
+    getImage('avatars/robot_female_1')
 ];
 
 
@@ -93,7 +93,7 @@ Tile.prototype.drawFaceDown = function() {
     fill(214, 247, 202);
     strokeWeight(2);
     rect(this.x, this.y, this.width, this.width, 10);
-    image(getImage("avatars/leaf-green"), 
+    image(getImage('avatars/leaf-green'), 
     this.x, this.y, this.width, this.width);
     this.isFaceUp = false;
 };
@@ -110,7 +110,7 @@ Tile.prototype.drawFaceDownHover = function() {
     fill(214, 247, 202);
     strokeWeight(2);
     rect(this.x, this.y, this.width, this.width, 10);
-    image(getImage("avatars/leaf-yellow"),
+    image(getImage('avatars/leaf-yellow'),
     this.x, this.y, this.width, this.width);
     this.isFaceUp = false;
 };
@@ -317,19 +317,19 @@ draw = function() {
         rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
-        text("Start Timer", CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
+        text('Start Timer', CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     } else if (CONFIG.hasEnded){
         fill (214, 247, 202);
         rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
-        text ("New Game", CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
+        text ('New Game', CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     } else {
         fill(214, 247, 202);
         rect(CONFIG.UI.START_TIMER_BUTTON.X,CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
-        text("Start Timer", CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
+        text('Start Timer', CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     }
     
 
@@ -347,17 +347,17 @@ draw = function() {
 
     // Print time elapsed:
 
-    text("time: " + CONFIG.stats.timeValues.currentTime + "s", 300, 30);
+    text('time: ' + CONFIG.stats.timeValues.currentTime + 's', 300, 30);
     
 
     // Print number of tries:
 
-    text("# of tries: " + CONFIG.stats.numberOfTries, 20,30);
+    text('# of tries: ' + CONFIG.stats.numberOfTries, 20,30);
     
 
     // Print high scores:
 
     fill(0, 0, 0);
     textSize(20);
-    text("best # of tries: " + CONFIG.stats.highscore.time + " best time: " + CONFIG.stats.highscore.tries, 20, 375);
+    text('best # of tries: ' + CONFIG.stats.highscore.time + ' best time: ' + CONFIG.stats.highscore.tries, 20, 375);
 };
