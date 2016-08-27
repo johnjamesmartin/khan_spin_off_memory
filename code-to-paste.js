@@ -1,5 +1,35 @@
 // Spin-off of "Project: Memory++" by John
 
+/*  Changes made to original:
+************************************************
+
+  (1) Made a start button that initializes
+     a timer. The game will not begin
+     until this is clicked.
+  
+  (2) Provided comphrensive user feedback
+     by way of an HUD with "tries" and "time"
+     displayed (as well as records for these).
+     
+  (3) Created hover states for cards when 
+     face down (yellow leaf graphic).
+  
+  (4) Changed the overall appearance — using
+     a darker colour scheme and better fitting
+     card faces.
+     
+  (5) Added aural cues, i.e. sounds that play
+     when certain game states are reached.
+     
+  (6) Added at least 40 lines of additional code
+     — centralizing many of the original values
+     into the CONFIG object at the top for making
+     quick and easy changes to the look and
+     feel of the game.
+
+************************************************/
+
+
 /*  Global variables:
 **************************************/
 
@@ -232,14 +262,12 @@ startGame = function() {
             CONFIG.arrays.tilesArr.push(new Tile(i * 78 + 10, j * 78 + 40, CONFIG.arrays.selectedTiles.pop()));
         }
     }
-    
 
     // Set a background colour for game:
 
     background(UI_STYLES.BACKGROUND_COLOUR[0],
                UI_STYLES.BACKGROUND_COLOUR[1],
                UI_STYLES.BACKGROUND_COLOUR[2]);
-    
 
     // Set tiles in the array to be face up:
 
@@ -330,7 +358,6 @@ draw = function() {
         CONFIG.arrays.revealedTiles = [];
         CONFIG.initialFrameCount = null;
     }
-    
 
     // Check for mouse hover and style appropriately:
 
@@ -344,7 +371,6 @@ draw = function() {
         }
     }
 
-
     // Clear styles for clean redraw:
 
     noStroke();
@@ -354,7 +380,6 @@ draw = function() {
     rect(0, 0, 400, 38);
     rect(0, 350, 400, 50);
     stroke(0, 0, 0);
-
 
     // Check game has begun / ended and update start button appropriately:
 
@@ -393,7 +418,6 @@ draw = function() {
         CONFIG.UI.START_TIMER_BUTTON.X + 5, 
         CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     }
-    
 
     // Update current fill colour:
 
@@ -401,18 +425,15 @@ draw = function() {
          UI_STYLES.TEXT_COLOUR[1],
          UI_STYLES.TEXT_COLOUR[2]);
 
-
     // Begin timer if start button was clicked:
 
     if (CONFIG.hasBegun) {
         CONFIG.stats.timeValues.currentTime = round((millis() - CONFIG.stats.timeValues.startTime) / 1000);
     }
 
-
     // Print number of tries and time elapsed:
 
     text(TEXT_LABELS.NUMBER_OF_TRIES + CONFIG.stats.numberOfTries + TEXT_LABELS.DIVIDER + TEXT_LABELS.CURRENT_TIME + CONFIG.stats.timeValues.currentTime + TEXT_LABELS.SECONDS_LABEL, width/2.5, 30);
-    
 
     // Print high scores:
 
