@@ -9,10 +9,6 @@ var CONFIG,
     TEXT_LABELS,
     Tile,
     UI_STYLES;
-
-
-/*  Potential card faces variable:
-**************************************/
     
 var potentialFaces;
 
@@ -103,7 +99,8 @@ UI_STYLES = {
     CARD_FACE_COLOUR: [20, 20, 20],
     TEXT_COLOUR: [236, 208, 120],
     TEXT_SIZE: 12,
-    START_GAME_TEXT_COLOUR: [83, 119, 122]
+    START_GAME_TEXT_COLOUR: [83, 119, 122],
+    STARTED_TIMER_COLOUR: [0, 0, 0]
 };
 
 
@@ -195,6 +192,7 @@ startGame = function() {
     CONFIG.hasBegun = false;
     CONFIG.stats.timeValues.startTime = 0;
     CONFIG.hasEnded = false;
+    
     CONFIG.arrays.selectedTiles = [];
     CONFIG.arrays.tilesArr = [];
     potentialFaces = FACES.slice(0);
@@ -358,9 +356,10 @@ draw = function() {
     // Check game has begun / ended and update start button appropriately:
 
     if (CONFIG.hasBegun) {
-        fill (30, 112, 0);
+        fill(UI_STYLES.STARTED_TIMER_COLOUR[0],
+             UI_STYLES.STARTED_TIMER_COLOUR[1],
+             UI_STYLES.STARTED_TIMER_COLOUR[2]);
         rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
-        fill(0,0,0);
         textSize(19);
         text(TEXT_LABELS.START_TIMER, CONFIG.UI.START_TIMER_BUTTON.X + 5, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     } else if (CONFIG.hasEnded){
@@ -380,7 +379,9 @@ draw = function() {
              UI_STYLES.START_GAME_TEXT_COLOUR[1],
              UI_STYLES.START_GAME_TEXT_COLOUR[2]);
         textSize(19);
-        text(TEXT_LABELS.START_TIMER, CONFIG.UI.START_TIMER_BUTTON.X + 5, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
+        text(TEXT_LABELS.START_TIMER, 
+        CONFIG.UI.START_TIMER_BUTTON.X + 5, 
+        CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     }
     
 
