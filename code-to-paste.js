@@ -36,17 +36,12 @@
 var CONFIG,
     FACES,
     GRAPHICS,
+    potentialFaces,
     SOUNDS,
     startGame,
     TEXT_LABELS,
     Tile,
     UI_STYLES;
-
-
-/*  Potential card faces variable:
-**************************************/
-
-var potentialFaces;
 
 
 /*  CONFIG is used to centralize a
