@@ -166,7 +166,7 @@ startGame = function() {
         
         var face, randomIndex;
         randomIndex = floor(random(CONFIG.potentialFaces.length));
-        face = CONFIG.potentialFaces[randomInd];
+        face = CONFIG.potentialFaces[randomIndex];
         CONFIG.arrays.selectedTiles.push(face);
         CONFIG.arrays.selectedTiles.push(face);
         CONFIG.potentialFaces.splice(randomIndex, 1);
@@ -305,7 +305,7 @@ draw = function() {
     
 
     // clear the top and bottom bar so we dont overlap on redraws
-    
+
     noStroke();
     fill(255,255,255);
     rect(0,0,400,38);
