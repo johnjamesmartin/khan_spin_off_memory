@@ -227,11 +227,9 @@ startGame = function() {
     CONFIG.hasBegun = false;
     CONFIG.stats.timeValues.startTime = 0;
     CONFIG.hasEnded = false;
-    
     CONFIG.arrays.selectedTiles = [];
     CONFIG.arrays.tilesArr = [];
     potentialFaces = FACES.slice(0);
-
 
     // For loop that picks a remaining face at random:
 
@@ -287,7 +285,9 @@ startGame();
 **************************************/
 
 mouseClicked = function() {
-
+    
+    playSound(getSound("retro/hit1"));
+    
     // When clicked, check the game has begun.
     // Present new button to restart if game ended:
 
@@ -312,6 +312,9 @@ mouseClicked = function() {
                     if (CONFIG.arrays.revealedTiles[0].face === CONFIG.arrays.revealedTiles[1].face) {
                         CONFIG.arrays.revealedTiles[0].isMatch = true;
                         CONFIG.arrays.revealedTiles[1].isMatch = true;
+                        
+                        playSound(getSound("retro/coin"));
+                        
                     }
                     CONFIG.initialFrameCount = frameCount;
                     loop();
@@ -388,14 +391,13 @@ draw = function() {
              UI_STYLES.STARTED_TIMER_COLOUR[1],
              UI_STYLES.STARTED_TIMER_COLOUR[2]);
         rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
-        
         fill(UI_STYLES.STARTED_TIMER_TXT_COLOUR[0],
              UI_STYLES.STARTED_TIMER_TXT_COLOUR[1],
              UI_STYLES.STARTED_TIMER_TXT_COLOUR[2]);
-             
         textSize(19);
         text(TEXT_LABELS.START_TIMER, CONFIG.UI.START_TIMER_BUTTON.X + 5, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     } else if (CONFIG.hasEnded){
+        playSound(getSound("rpg/giant-yah"));
         fill(UI_STYLES.CARD_FACE_COLOUR[0],
              UI_STYLES.CARD_FACE_COLOUR[1],
              UI_STYLES.CARD_FACE_COLOUR[2]);
@@ -418,7 +420,7 @@ draw = function() {
         CONFIG.UI.START_TIMER_BUTTON.X + 5, 
         CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     }
-
+    
     // Update current fill colour:
 
     fill(UI_STYLES.TEXT_COLOUR[0],
