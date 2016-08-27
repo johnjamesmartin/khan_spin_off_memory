@@ -157,58 +157,77 @@ startGame = function() {
     CONFIG.arrays.selectedTiles = [];
     CONFIG.arrays.tilesArr = [];
 
+
+    // For loop that picks a remaining face at random:
+
     for (var i = 0; i < (CONFIG.COLS_LENGTH * CONFIG.ROWS_LENGTH) / 2; i++) {
-        // Randomly pick one from the array of remaining faces
-        var randomInd = floor(random(CONFIG.potentialFaces.length));
-        var face = CONFIG.potentialFaces[randomInd];
-        // Push twice onto array
+        
+        // Push faces twice onto array:
+        
+        var face, randomIndex;
+        randomIndex = floor(random(CONFIG.potentialFaces.length));
+        face = CONFIG.potentialFaces[randomInd];
         CONFIG.arrays.selectedTiles.push(face);
         CONFIG.arrays.selectedTiles.push(face);
-        // Remove from array
-        CONFIG.potentialFaces.splice(randomInd, 1);
+        CONFIG.potentialFaces.splice(randomIndex, 1);
     }
     
-    // Now we need to randomize the array
+
+    // Shuffle the array (set a random order):
+
     CONFIG.arrays.selectedTiles.sort(function() {
         return 0.5 - Math.random();
     });
     
-    // Create the CONFIG.arrays.tilesArr
+
+    // Populate the tiles array:
+
     for (var i = 0; i < CONFIG.COLS_LENGTH; i++) {
         for (var j = 0; j < CONFIG.ROWS_LENGTH; j++) {
             CONFIG.arrays.tilesArr.push(new Tile(i * 78 + 10, j * 78 + 40, CONFIG.arrays.selectedTiles.pop()));
         }
     }
     
+
+    // Set a background colour for game:
+
     background(255, 255, 255);
     
-    // Now draw them face up
+
+    // Set tiles in the array to be face up:
+
     for (var i = 0; i < CONFIG.arrays.tilesArr.length; i++) {
         CONFIG.arrays.tilesArr[i].drawFaceDown();
     }
 };
 
-// start our game for the first time
+
+/*  Launch "startGame" function:
+**************************************/
+
 startGame();
 
 
+/*  When user clicks the mouse:
+**************************************/
 
 mouseClicked = function() {
-    // check if start/new game button is clicked, and we're not in the middle of a game
-    if(mouseX > CONFIG.UI.START_TIMER_BUTTON.X && mouseX < CONFIG.UI.START_TIMER_BUTTON.X + CONFIG.UI.START_TIMER_BUTTON.WIDTH && mouseY > CONFIG.UI.START_TIMER_BUTTON.Y && mouseY < CONFIG.UI.START_TIMER_BUTTON.Y + CONFIG.UI.START_TIMER_BUTTON.HEIGHT && !CONFIG.hasBegun){
-        
-    // if the game is over we're showing the new game button and should restart
-    if(CONFIG.hasEnded){
-        startGame();
-    // otherwise we let the program know were in the middle of a game and get a start time
-    } else {
-        CONFIG.hasBegun = true;
-        CONFIG.stats.timeValues.startTime = millis();
+
+    // When clicked, check the game has begun.
+    // Present new button to restart if game ended:
+
+    if (mouseX > CONFIG.UI.START_TIMER_BUTTON.X && mouseX < CONFIG.UI.START_TIMER_BUTTON.X + CONFIG.UI.START_TIMER_BUTTON.WIDTH && mouseY > CONFIG.UI.START_TIMER_BUTTON.Y && mouseY < CONFIG.UI.START_TIMER_BUTTON.Y + CONFIG.UI.START_TIMER_BUTTON.HEIGHT && !CONFIG.hasBegun){
+        if (CONFIG.hasEnded){
+            startGame();
+        } else {
+            CONFIG.hasBegun = true;
+            CONFIG.stats.timeValues.startTime = millis();
+        }
     }
-    
-    }
+
+    // Loop over tiles and and determine user interactions:
+
     for (var i = 0; i < CONFIG.arrays.tilesArr.length; i++) {
-        // make this statement check if start button has been pressed
         if (CONFIG.arrays.tilesArr[i].isUnderMouse(mouseX, mouseY) && CONFIG.hasBegun) {
             if (CONFIG.arrays.revealedTiles.length < 2 && !CONFIG.arrays.tilesArr[i].isFaceUp) {
                 CONFIG.arrays.tilesArr[i].drawFaceUp();
@@ -225,32 +244,37 @@ mouseClicked = function() {
             } 
         }
     }
+
+    // :
+
     var foundAllMatches = true;
+
+
+    // :
+
     for (var i = 0; i < CONFIG.arrays.tilesArr.length; i++) {
         foundAllMatches = foundAllMatches && CONFIG.arrays.tilesArr[i].isMatch;
     }
+
+
+    // If all matches found, determine if stats are high scores:
+
     if (foundAllMatches) {
-        // if our current time is better than our best time and if it's not 0 (default time)
-        if(CONFIG.stats.timeValues.currentTime < CONFIG.stats.highscore.time || CONFIG.stats.highscore.time === 0){
-            // set our new best time as the current time
+        if (CONFIG.stats.timeValues.currentTime < CONFIG.stats.highscore.time || CONFIG.stats.highscore.time === 0){
             CONFIG.stats.highscore.time = CONFIG.stats.timeValues.currentTime;
         }
-        
-        // same goes for number of tries
-        if(CONFIG.stats.numberOfTries < CONFIG.stats.highscore.tries || CONFIG.stats.highscore.tries === 0){
+        if (CONFIG.stats.numberOfTries < CONFIG.stats.highscore.tries || CONFIG.stats.highscore.tries === 0){
             CONFIG.stats.highscore.tries = CONFIG.stats.numberOfTries;
         }
-        
-        // we are currently not in a game
         CONFIG.hasBegun = false;
-        // and the game is over
         CONFIG.hasEnded = true;
-
-        // we are done!
     }
 };
 
-// main draw function    
+
+/*  Looping draw function:
+**************************************/
+
 draw = function() {
     if (CONFIG.initialFrameCount && (frameCount - CONFIG.initialFrameCount) > 30) {
         for (var i = 0; i < CONFIG.arrays.tilesArr.length; i++) {
@@ -279,15 +303,19 @@ draw = function() {
         }
     }
     
+
     // clear the top and bottom bar so we dont overlap on redraws
+    
     noStroke();
     fill(255,255,255);
     rect(0,0,400,38);
     rect(0,350,400,50);
     stroke(0,0,0);
     
+
     // start timer button when pressed
-    if(CONFIG.hasBegun){
+
+    if (CONFIG.hasBegun){
         fill (30, 112, 0);
         rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
@@ -310,13 +338,13 @@ draw = function() {
     }
             
     // show timer
-    fill(0,0,0);
+    fill(0, 0, 0);
     // if we clicked the start button start counting
-    if(CONFIG.hasBegun){
+    if (CONFIG.hasBegun){
         CONFIG.stats.timeValues.currentTime = round((millis() - CONFIG.stats.timeValues.startTime)/1000);
     }
     // print the time
-    text ("time: " + CONFIG.stats.timeValues.currentTime + "s", 300, 30);
+    text("time: " + CONFIG.stats.timeValues.currentTime + "s", 300, 30);
     
     // display number of tries
     text("# of tries: " + CONFIG.stats.numberOfTries, 20,30);
