@@ -404,5 +404,5 @@ draw = function() {
          UI_STYLES.TEXT_COLOUR[2]);
          
     textSize(UI_STYLES.TEXT_SIZE);
-    text(TEXT_LABELS.RECORD_TRIES + CONFIG.stats.highscore.time + '       |       ' + TEXT_LABELS.RECORD_TIME + CONFIG.stats.highscore.tries, 20, 370);
+    text(TEXT_LABELS.RECORD_TRIES + CONFIG.stats.highscore.tries + '       |       ' + TEXT_LABELS.RECORD_TIME + CONFIG.stats.highscore.time, 20, 370);
 };
