@@ -6,6 +6,7 @@
 var CONFIG,
     FACES,
     startGame,
+    TEXT_LABELS,
     Tile;
 
 
@@ -31,7 +32,7 @@ CONFIG = {
             Y: 5,
             WIDTH: 100,
             HEIGHT: 30
-        }
+        },
     },
     stats: {
         highscore: {
@@ -70,6 +71,20 @@ FACES = [
     getImage('avatars/old-spice-man'),
     getImage('avatars/robot_female_1')
 ];
+
+
+/*  Text Labels used throughout UI:
+**************************************/
+
+TEXT_LABELS = {
+    START_TIMER: 'start game',
+    NEW_GAME: 'New Game',
+    CURRENT_TIME: 'time: ',
+    NUMBER_OF_TRIES: '# of tries: ',
+    RECORD_TRIES: 'best # of tries: ',
+    RECORD_TIME: ' best time: ',
+    SECONDS_LABEL: 's'
+};
 
 
 /*  Tile constructor function:
@@ -317,19 +332,19 @@ draw = function() {
         rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
-        text('Start Timer', CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
+        text(TEXT_LABELS.START_TIMER, CONFIG.UI.START_TIMER_BUTTON.X + 5, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     } else if (CONFIG.hasEnded){
         fill (214, 247, 202);
         rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
-        text ('New Game', CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
+        text (TEXT_LABELS.NEW_GAME, CONFIG.UI.START_TIMER_BUTTON.X + 5, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     } else {
         fill(214, 247, 202);
         rect(CONFIG.UI.START_TIMER_BUTTON.X,CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
-        text('Start Timer', CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
+        text(TEXT_LABELS.START_TIMER, CONFIG.UI.START_TIMER_BUTTON.X + 5, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     }
     
 
@@ -347,17 +362,17 @@ draw = function() {
 
     // Print time elapsed:
 
-    text('time: ' + CONFIG.stats.timeValues.currentTime + 's', 300, 30);
+    text(TEXT_LABELS.CURRENT_TIME + CONFIG.stats.timeValues.currentTime + TEXT_LABELS.SECONDS_LABEL, 300, 30);
     
 
     // Print number of tries:
 
-    text('# of tries: ' + CONFIG.stats.numberOfTries, 20,30);
+    text(TEXT_LABELS.NUMBER_OF_TRIES + CONFIG.stats.numberOfTries, 20,30);
     
 
     // Print high scores:
 
     fill(0, 0, 0);
     textSize(20);
-    text('best # of tries: ' + CONFIG.stats.highscore.time + ' best time: ' + CONFIG.stats.highscore.tries, 20, 375);
+    text(TEXT_LABELS.RECORD_TRIES + CONFIG.stats.highscore.time + TEXT_LABELS.RECORD_TIME + CONFIG.stats.highscore.tries, 20, 375);
 };
