@@ -50,7 +50,8 @@ CONFIG = {
         tilesArr: []
     },
     initialFrameCount: null,
-    potentialFaces: FACES.slice(0)
+    potentialFaces: FACES.slice(0),
+    foundAllMatches: ''
 };
 
 
@@ -123,7 +124,7 @@ Tile.prototype.drawFaceUp = function() {
     fill(214, 247, 202);
     strokeWeight(2);
     rect(this.x, this.y, this.width, this.width, 10);
-    image(this.face, this.x, this.y, this.width, this.width);
+    image(this.face, this.x + 5, this.y + 5, this.width - 10, this.width - 10);
     this.isFaceUp = true;
 };
 
@@ -247,19 +248,19 @@ mouseClicked = function() {
 
     // :
 
-    var foundAllMatches = true;
+    CONFIG.foundAllMatches = true;
 
 
     // :
 
     for (var i = 0; i < CONFIG.arrays.tilesArr.length; i++) {
-        foundAllMatches = foundAllMatches && CONFIG.arrays.tilesArr[i].isMatch;
+        CONFIG.foundAllMatches = CONFIG.foundAllMatches && CONFIG.arrays.tilesArr[i].isMatch;
     }
 
 
     // If all matches found, determine if stats are high scores:
 
-    if (foundAllMatches) {
+    if (CONFIG.foundAllMatches) {
         if (CONFIG.stats.timeValues.currentTime < CONFIG.stats.highscore.time || CONFIG.stats.highscore.time === 0){
             CONFIG.stats.highscore.time = CONFIG.stats.timeValues.currentTime;
         }
@@ -286,7 +287,7 @@ draw = function() {
         CONFIG.initialFrameCount = null;
     }
     
-    
+
     // Check for mouse hover and style appropriately:
 
     for (var j = 0; j < CONFIG.arrays.tilesArr.length; j++) {
