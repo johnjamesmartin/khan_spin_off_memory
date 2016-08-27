@@ -84,7 +84,8 @@ TEXT_LABELS = {
     NUMBER_OF_TRIES: 'tries: ',
     RECORD_TRIES: 'tries record: ',
     RECORD_TIME: ' time record: ',
-    SECONDS_LABEL: 's'
+    SECONDS_LABEL: 's',
+    DIVIDER: '       |       '
 };
 
 
@@ -394,7 +395,7 @@ draw = function() {
 
     // Print number of tries and time elapsed:
 
-    text(TEXT_LABELS.NUMBER_OF_TRIES + CONFIG.stats.numberOfTries + '       |       ' + TEXT_LABELS.CURRENT_TIME + CONFIG.stats.timeValues.currentTime + TEXT_LABELS.SECONDS_LABEL, width/2.5, 30);
+    text(TEXT_LABELS.NUMBER_OF_TRIES + CONFIG.stats.numberOfTries + TEXT_LABELS.DIVIDER + TEXT_LABELS.CURRENT_TIME + CONFIG.stats.timeValues.currentTime + TEXT_LABELS.SECONDS_LABEL, width/2.5, 30);
     
 
     // Print high scores:
@@ -404,5 +405,5 @@ draw = function() {
          UI_STYLES.TEXT_COLOUR[2]);
          
     textSize(UI_STYLES.TEXT_SIZE);
-    text(TEXT_LABELS.RECORD_TRIES + CONFIG.stats.highscore.tries + '       |       ' + TEXT_LABELS.RECORD_TIME + CONFIG.stats.highscore.time, 20, 370);
+    text(TEXT_LABELS.RECORD_TRIES + CONFIG.stats.highscore.tries + TEXT_LABELS.DIVIDER + TEXT_LABELS.RECORD_TIME + CONFIG.stats.highscore.time, 20, 370);
 };
