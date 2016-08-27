@@ -286,70 +286,76 @@ draw = function() {
         CONFIG.initialFrameCount = null;
     }
     
-    // mouse hover
-    for(var j = 0; j < CONFIG.arrays.tilesArr.length; j++){
-        // if the mouse is over and tile and it is not face up
-        if(CONFIG.arrays.tilesArr[j].isUnderMouse(mouseX, mouseY) && !CONFIG.arrays.tilesArr[j].isFaceUp){
-            // we draw the face down hover tile
+    
+    // Check for mouse hover and style appropriately:
+
+    for (var j = 0; j < CONFIG.arrays.tilesArr.length; j++) {
+        if (CONFIG.arrays.tilesArr[j].isUnderMouse(mouseX, mouseY) && !CONFIG.arrays.tilesArr[j].isFaceUp){
             CONFIG.arrays.tilesArr[j].drawFaceDownHover();
-        // else if the tile we are over is face up
         } else if (CONFIG.arrays.tilesArr[j].isFaceUp){
-            // we draw a normal face up tile
             CONFIG.arrays.tilesArr[j].drawFaceUp();
-        // else we are not over the tile and it is not face up
         } else {
-            // we draw a noraml face down tile
             CONFIG.arrays.tilesArr[j].drawFaceDown();
         }
     }
-    
 
-    // clear the top and bottom bar so we dont overlap on redraws
+
+    // Clear styles for clean redraw:
 
     noStroke();
-    fill(255,255,255);
-    rect(0,0,400,38);
-    rect(0,350,400,50);
-    stroke(0,0,0);
-    
+    fill(255, 255, 255);
+    rect(0, 0, 400, 38);
+    rect(0, 350, 400, 50);
+    stroke(0, 0, 0);
 
-    // start timer button when pressed
 
-    if (CONFIG.hasBegun){
+    // Check game has begun / ended and update start button appropriately:
+
+    if (CONFIG.hasBegun) {
         fill (30, 112, 0);
         rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
-        text ("Start Timer", CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
-    // changes into a new game button if the game is over
+        text("Start Timer", CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     } else if (CONFIG.hasEnded){
         fill (214, 247, 202);
         rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
         text ("New Game", CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
-    // otherwise we show the default start timer button
     } else {
-        fill (214, 247, 202);
+        fill(214, 247, 202);
         rect(CONFIG.UI.START_TIMER_BUTTON.X,CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
-        text ("Start Timer", CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
+        text("Start Timer", CONFIG.UI.START_TIMER_BUTTON.X + 3, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     }
-            
-    // show timer
+    
+
+    // Update current fill colour:
+
     fill(0, 0, 0);
+
+
     // if we clicked the start button start counting
-    if (CONFIG.hasBegun){
-        CONFIG.stats.timeValues.currentTime = round((millis() - CONFIG.stats.timeValues.startTime)/1000);
+
+    if (CONFIG.hasBegun) {
+        CONFIG.stats.timeValues.currentTime = round((millis() - CONFIG.stats.timeValues.startTime) / 1000);
     }
-    // print the time
+
+
+    // Print time elapsed:
+
     text("time: " + CONFIG.stats.timeValues.currentTime + "s", 300, 30);
     
-    // display number of tries
+
+    // Print number of tries:
+
     text("# of tries: " + CONFIG.stats.numberOfTries, 20,30);
     
-    // display best time and number of tries
+
+    // Print high scores:
+
     fill(0, 0, 0);
     textSize(20);
     text("best # of tries: " + CONFIG.stats.highscore.time + " best time: " + CONFIG.stats.highscore.tries, 20, 375);
