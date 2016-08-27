@@ -7,7 +7,8 @@ var CONFIG,
     FACES,
     startGame,
     TEXT_LABELS,
-    Tile;
+    Tile,
+    UI_STYLES;
 
 
 /*  CONFIG is used to centralize a
@@ -84,6 +85,15 @@ TEXT_LABELS = {
     RECORD_TRIES: 'best # of tries: ',
     RECORD_TIME: ' best time: ',
     SECONDS_LABEL: 's'
+};
+
+
+/*  UI Styles:
+**************************************/
+
+UI_STYLES = {
+    BACKGROUND_COLOUR: [40, 40, 40],
+    PANEL_COLOUR: [40, 40, 40]
 };
 
 
@@ -207,7 +217,9 @@ startGame = function() {
 
     // Set a background colour for game:
 
-    background(255, 255, 255);
+    background(UI_STYLES.BACKGROUND_COLOUR[0],
+               UI_STYLES.BACKGROUND_COLOUR[1],
+               UI_STYLES.BACKGROUND_COLOUR[2]);
     
 
     // Set tiles in the array to be face up:
@@ -319,7 +331,9 @@ draw = function() {
     // Clear styles for clean redraw:
 
     noStroke();
-    fill(255, 255, 255);
+    fill(UI_STYLES.PANEL_COLOUR[0],
+         UI_STYLES.PANEL_COLOUR[1],
+         UI_STYLES.PANEL_COLOUR[2]);
     rect(0, 0, 400, 38);
     rect(0, 350, 400, 50);
     stroke(0, 0, 0);
