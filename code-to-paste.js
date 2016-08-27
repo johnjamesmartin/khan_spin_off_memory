@@ -11,6 +11,12 @@ var CONFIG,
     UI_STYLES;
 
 
+/*  Potential card faces variable:
+**************************************/
+    
+var potentialFaces;
+
+
 /*  CONFIG is used to centralize a
     number of values used throughout
     the game:
@@ -52,7 +58,6 @@ CONFIG = {
         tilesArr: []
     },
     initialFrameCount: null,
-    potentialFaces: FACES.slice(0),
     foundAllMatches: ''
 };
 
@@ -190,9 +195,9 @@ startGame = function() {
     CONFIG.hasBegun = false;
     CONFIG.stats.timeValues.startTime = 0;
     CONFIG.hasEnded = false;
-    CONFIG.potentialFaces = FACES.slice(0);
     CONFIG.arrays.selectedTiles = [];
     CONFIG.arrays.tilesArr = [];
+    potentialFaces = FACES.slice(0);
 
 
     // For loop that picks a remaining face at random:
@@ -202,11 +207,11 @@ startGame = function() {
         // Push faces twice onto array:
         
         var face, randomIndex;
-        randomIndex = floor(random(CONFIG.potentialFaces.length));
-        face = CONFIG.potentialFaces[randomIndex];
+        randomIndex = floor(random(potentialFaces.length));
+        face = potentialFaces[randomIndex];
         CONFIG.arrays.selectedTiles.push(face);
         CONFIG.arrays.selectedTiles.push(face);
-        CONFIG.potentialFaces.splice(randomIndex, 1);
+        potentialFaces.splice(randomIndex, 1);
     }
     
 
