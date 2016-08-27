@@ -9,7 +9,11 @@ var CONFIG,
     TEXT_LABELS,
     Tile,
     UI_STYLES;
-    
+
+
+/*  Potential card faces variable:
+**************************************/
+
 var potentialFaces;
 
 
@@ -27,7 +31,7 @@ CONFIG = {
     COLS_LENGTH: 5,
     ROWS_LENGTH: 4,
 
-    // User Interface elements:
+    // User interface elements:
 
     UI: {
         START_TIMER_BUTTON: {
@@ -288,17 +292,15 @@ mouseClicked = function() {
         }
     }
 
-    // :
+    // Set the CONFIG property to true if all matches were found:
 
     CONFIG.foundAllMatches = true;
 
-
-    // :
+   // Set the CONFIG property to true if all matches were found & matched:
 
     for (var i = 0; i < CONFIG.arrays.tilesArr.length; i++) {
         CONFIG.foundAllMatches = CONFIG.foundAllMatches && CONFIG.arrays.tilesArr[i].isMatch;
     }
-
 
     // If all matches found, determine if stats are high scores:
 
