@@ -122,7 +122,7 @@ Tile.prototype.drawFaceDown = function() {
          UI_STYLES.CARD_FACE_COLOUR[1],
          UI_STYLES.CARD_FACE_COLOUR[2]);
     strokeWeight(2);
-    rect(this.x, this.y, this.width, this.width, 10);
+    rect(this.x, this.y, this.width, this.width, 0);
     image(getImage('avatars/leaf-green'), 
     this.x, this.y, this.width, this.width);
     this.isFaceUp = false;
@@ -141,7 +141,7 @@ Tile.prototype.drawFaceDownHover = function() {
          UI_STYLES.CARD_FACE_COLOUR[1],
          UI_STYLES.CARD_FACE_COLOUR[2]);
     strokeWeight(2);
-    rect(this.x, this.y, this.width, this.width, 10);
+    rect(this.x, this.y, this.width, this.width, 0);
     image(getImage('avatars/leaf-yellow'),
     this.x, this.y, this.width, this.width);
     this.isFaceUp = false;
@@ -157,7 +157,7 @@ Tile.prototype.drawFaceUp = function() {
          UI_STYLES.CARD_FACE_COLOUR[1],
          UI_STYLES.CARD_FACE_COLOUR[2]);
     strokeWeight(2);
-    rect(this.x, this.y, this.width, this.width, 10);
+    rect(this.x, this.y, this.width, this.width, 0);
     image(this.face, this.x + 5, this.y + 5, this.width - 10, this.width - 10);
     this.isFaceUp = true;
 };
@@ -377,24 +377,21 @@ draw = function() {
 
     // Update current fill colour:
 
-    fill(0, 0, 0);
+    fill(UI_STYLES.TEXT_COLOUR[0],
+         UI_STYLES.TEXT_COLOUR[1],
+         UI_STYLES.TEXT_COLOUR[2]);
 
 
-    // if we clicked the start button start counting
+    // Begin timer if start button was clicked:
 
     if (CONFIG.hasBegun) {
         CONFIG.stats.timeValues.currentTime = round((millis() - CONFIG.stats.timeValues.startTime) / 1000);
     }
 
 
-    // Print time elapsed:
+    // Print number of tries and time elapsed:
 
-    text(TEXT_LABELS.CURRENT_TIME + CONFIG.stats.timeValues.currentTime + TEXT_LABELS.SECONDS_LABEL, 300, 30);
-    
-
-    // Print number of tries:
-
-    text(TEXT_LABELS.NUMBER_OF_TRIES + CONFIG.stats.numberOfTries, 20, 30);
+    text(TEXT_LABELS.NUMBER_OF_TRIES + CONFIG.stats.numberOfTries + '       |       ' + TEXT_LABELS.CURRENT_TIME + CONFIG.stats.timeValues.currentTime + TEXT_LABELS.SECONDS_LABEL, width/2.5, 30);
     
 
     // Print high scores:
@@ -404,5 +401,5 @@ draw = function() {
          UI_STYLES.TEXT_COLOUR[2]);
          
     textSize(UI_STYLES.TEXT_SIZE);
-    text(TEXT_LABELS.RECORD_TRIES + CONFIG.stats.highscore.time + '       |       ' + TEXT_LABELS.RECORD_TIME + CONFIG.stats.highscore.tries, width/2/2/2, 375);
+    text(TEXT_LABELS.RECORD_TRIES + CONFIG.stats.highscore.time + '       |       ' + TEXT_LABELS.RECORD_TIME + CONFIG.stats.highscore.tries, 20, 370);
 };
