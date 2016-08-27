@@ -35,6 +35,8 @@
 
 var CONFIG,
     FACES,
+    GRAPHICS,
+    SOUNDS,
     startGame,
     TEXT_LABELS,
     Tile,
@@ -138,6 +140,25 @@ UI_STYLES = {
     STARTED_TIMER_TXT_COLOUR: [83, 119, 122]
 };
 
+/*  Sounds / Aural Cues:
+**************************************/
+
+SOUNDS = {
+    SUCCESSFUL_MATCH: 'retro/coin',
+    COMPLETED_BOARD: 'rpg/giant-yah',
+    TOUCH_SOUND: 'retro/hit1'
+};
+
+/*  Graphics:
+**************************************/
+
+GRAPHICS = {
+    CARD: {
+        FACEDOWN_IMAGE: 'avatars/leaf-green',
+        FACEUP_IMAGE: 'avatars/leaf-yellow'
+    }
+};
+
 
 /*  Tile constructor function:
 **************************************/
@@ -162,7 +183,7 @@ Tile.prototype.drawFaceDown = function() {
          UI_STYLES.CARD_FACE_COLOUR[2]);
     strokeWeight(2);
     rect(this.x, this.y, this.width, this.width, 0);
-    image(getImage('avatars/leaf-green'), 
+    image(getImage(GRAPHICS.CARD.FACEDOWN_IMAGE), 
     this.x, this.y, this.width, this.width);
     this.isFaceUp = false;
 };
@@ -181,7 +202,7 @@ Tile.prototype.drawFaceDownHover = function() {
          UI_STYLES.CARD_FACE_COLOUR[2]);
     strokeWeight(2);
     rect(this.x, this.y, this.width, this.width, 0);
-    image(getImage('avatars/leaf-yellow'),
+    image(getImage(GRAPHICS.CARD.FACEUP_IMAGE),
     this.x, this.y, this.width, this.width);
     this.isFaceUp = false;
 };
@@ -286,7 +307,9 @@ startGame();
 
 mouseClicked = function() {
     
-    playSound(getSound("retro/hit1"));
+    // Sound of interacting with board (dull thud noise):
+
+    playSound(getSound(SOUNDS.TOUCH_SOUND));
     
     // When clicked, check the game has begun.
     // Present new button to restart if game ended:
@@ -313,8 +336,9 @@ mouseClicked = function() {
                         CONFIG.arrays.revealedTiles[0].isMatch = true;
                         CONFIG.arrays.revealedTiles[1].isMatch = true;
                         
-                        playSound(getSound("retro/coin"));
-                        
+                        // Tile match success sound:
+
+                        playSound(getSound(SOUNDS.SUCCESSFUL_MATCH));
                     }
                     CONFIG.initialFrameCount = frameCount;
                     loop();
@@ -397,7 +421,11 @@ draw = function() {
         textSize(19);
         text(TEXT_LABELS.START_TIMER, CONFIG.UI.START_TIMER_BUTTON.X + 5, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     } else if (CONFIG.hasEnded){
-        playSound(getSound("rpg/giant-yah"));
+
+        // Sound of completing board:
+
+        playSound(getSound(SOUNDS.COMPLETED_BOARD));
+
         fill(UI_STYLES.CARD_FACE_COLOUR[0],
              UI_STYLES.CARD_FACE_COLOUR[1],
              UI_STYLES.CARD_FACE_COLOUR[2]);
