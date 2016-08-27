@@ -29,7 +29,7 @@ CONFIG = {
 
     UI: {
         START_TIMER_BUTTON: {
-            X: 150,
+            X: 10,
             Y: 5,
             WIDTH: 100,
             HEIGHT: 30
@@ -79,11 +79,11 @@ FACES = [
 
 TEXT_LABELS = {
     START_TIMER: 'start game',
-    NEW_GAME: 'New Game',
+    NEW_GAME: 'new game',
     CURRENT_TIME: 'time: ',
-    NUMBER_OF_TRIES: '# of tries: ',
-    RECORD_TRIES: 'best # of tries: ',
-    RECORD_TIME: ' best time: ',
+    NUMBER_OF_TRIES: 'tries: ',
+    RECORD_TRIES: 'tries record: ',
+    RECORD_TIME: ' time record: ',
     SECONDS_LABEL: 's'
 };
 
@@ -93,7 +93,10 @@ TEXT_LABELS = {
 
 UI_STYLES = {
     BACKGROUND_COLOUR: [40, 40, 40],
-    PANEL_COLOUR: [40, 40, 40]
+    PANEL_COLOUR: [40, 40, 40],
+    CARD_FACE_COLOUR: [214, 247, 202],
+    TEXT_COLOUR: [255, 255, 255],
+    TEXT_SIZE: 13
 };
 
 
@@ -115,7 +118,9 @@ Tile = function(x, y, face) {
 **************************************/
 
 Tile.prototype.drawFaceDown = function() {
-    fill(214, 247, 202);
+    fill(UI_STYLES.CARD_FACE_COLOUR[0],
+         UI_STYLES.CARD_FACE_COLOUR[1],
+         UI_STYLES.CARD_FACE_COLOUR[2]);
     strokeWeight(2);
     rect(this.x, this.y, this.width, this.width, 10);
     image(getImage('avatars/leaf-green'), 
@@ -132,7 +137,9 @@ Tile.prototype.drawFaceDown = function() {
 **************************************/
 
 Tile.prototype.drawFaceDownHover = function() {
-    fill(214, 247, 202);
+    fill(UI_STYLES.CARD_FACE_COLOUR[0],
+         UI_STYLES.CARD_FACE_COLOUR[1],
+         UI_STYLES.CARD_FACE_COLOUR[2]);
     strokeWeight(2);
     rect(this.x, this.y, this.width, this.width, 10);
     image(getImage('avatars/leaf-yellow'),
@@ -146,7 +153,9 @@ Tile.prototype.drawFaceDownHover = function() {
 **************************************/
 
 Tile.prototype.drawFaceUp = function() {
-    fill(214, 247, 202);
+    fill(UI_STYLES.CARD_FACE_COLOUR[0],
+         UI_STYLES.CARD_FACE_COLOUR[1],
+         UI_STYLES.CARD_FACE_COLOUR[2]);
     strokeWeight(2);
     rect(this.x, this.y, this.width, this.width, 10);
     image(this.face, this.x + 5, this.y + 5, this.width - 10, this.width - 10);
@@ -348,13 +357,17 @@ draw = function() {
         textSize(19);
         text(TEXT_LABELS.START_TIMER, CONFIG.UI.START_TIMER_BUTTON.X + 5, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     } else if (CONFIG.hasEnded){
-        fill (214, 247, 202);
+        fill(UI_STYLES.CARD_FACE_COLOUR[0],
+             UI_STYLES.CARD_FACE_COLOUR[1],
+             UI_STYLES.CARD_FACE_COLOUR[2]);
         rect(CONFIG.UI.START_TIMER_BUTTON.X, CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
-        fill(0,0,0);
+        fill(0, 0, 0);
         textSize(19);
         text (TEXT_LABELS.NEW_GAME, CONFIG.UI.START_TIMER_BUTTON.X + 5, CONFIG.UI.START_TIMER_BUTTON.Y + 21);
     } else {
-        fill(214, 247, 202);
+        fill(UI_STYLES.CARD_FACE_COLOUR[0],
+             UI_STYLES.CARD_FACE_COLOUR[1],
+             UI_STYLES.CARD_FACE_COLOUR[2]);
         rect(CONFIG.UI.START_TIMER_BUTTON.X,CONFIG.UI.START_TIMER_BUTTON.Y, CONFIG.UI.START_TIMER_BUTTON.WIDTH, CONFIG.UI.START_TIMER_BUTTON.HEIGHT);
         fill(0,0,0);
         textSize(19);
@@ -381,12 +394,15 @@ draw = function() {
 
     // Print number of tries:
 
-    text(TEXT_LABELS.NUMBER_OF_TRIES + CONFIG.stats.numberOfTries, 20,30);
+    text(TEXT_LABELS.NUMBER_OF_TRIES + CONFIG.stats.numberOfTries, 20, 30);
     
 
     // Print high scores:
 
-    fill(0, 0, 0);
-    textSize(20);
-    text(TEXT_LABELS.RECORD_TRIES + CONFIG.stats.highscore.time + TEXT_LABELS.RECORD_TIME + CONFIG.stats.highscore.tries, 20, 375);
+    fill(UI_STYLES.TEXT_COLOUR[0],
+         UI_STYLES.TEXT_COLOUR[1],
+         UI_STYLES.TEXT_COLOUR[2]);
+         
+    textSize(UI_STYLES.TEXT_SIZE);
+    text(TEXT_LABELS.RECORD_TRIES + CONFIG.stats.highscore.time + '       |       ' + TEXT_LABELS.RECORD_TIME + CONFIG.stats.highscore.tries, width/2/2/2, 375);
 };
